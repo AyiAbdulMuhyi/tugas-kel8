@@ -1,4 +1,6 @@
 import streamlit as st
+from pulp import LpMaximize, LpProblem, LpVariable, lpSum
+import matplotlib.pyplot as plt
 
 # Judul aplikasi
 st.set_page_config(page_title="Aplikasi Tiga Tab", layout="wide")
@@ -9,13 +11,41 @@ tab1, tab2, tab3 = st.tabs(["📁 Tab 1: Data", "📈 Tab 2: Analisis", "⚙️ 
 
 # Isi Tab 1
 with tab1:
-    st.header("Tab 1: Data")
-    st.write("Tampilkan data atau input form di sini.")
-    uploaded_file = st.file_uploader("Unggah file CSV", type=["csv"])
-    if uploaded_file is not None:
-        import pandas as pd
-        df = pd.read_csv(uploaded_file)
-        st.dataframe(df)
+    st.title("Optimasi Produksi Pabrik Es Krim (Linear Programming)")
+
+    # Membuat model LP
+    model = LpProblem("Optimasi_Produksi_Es_Krim", LpMaximize)
+
+    # Variabel keputusan
+    x = LpVariable("Cokelat", lowBound=0, cat='Continuous')
+    y = LpVariable("Vanila", lowBound=0, cat='Continuous')
+    z = LpVariable("Stroberi", lowBound=0, cat='Continuous')
+
+    # Fungsi tujuan
+    model += 3000*x + 2500*y + 3500*z, "Total_Keuntungan"
+
+    # Kendala
+    model += 3*x + 2*y + 4*z <= 100, "Kapasitas_Bahan_Baku"
+    model += 2*x + 1.5*y + 2.5*z <= 80, "Jam_Kerja"
+
+    # Menyelesaikan model
+    model.solve()
+
+    # Menampilkan hasil
+    st.subheader("Hasil Optimasi Produksi:")
+    st.write(f"Produksi Es Krim Cokelat: {x.varValue:.2f} unit")
+    st.write(f"Produksi Es Krim Vanila : {y.varValue:.2f} unit")
+    st.write(f"Produksi Es Krim Stroberi: {z.varValue:.2f} unit")
+    st.write(f"Total Keuntungan: Rp {model.objective.value():,.0f}")
+
+    # Visualisasi
+    fig, ax = plt.subplots()
+    jenis = ['Cokelat', 'Vanila', 'Stroberi']
+    jumlah = [x.varValue, y.varValue, z.varValue]
+    ax.bar(jenis, jumlah, color=['brown', 'beige', 'pink'])
+    ax.set_ylabel("Jumlah Produksi (unit)")
+    ax.set_title("Visualisasi Hasil Produksi Optimal")
+    st.pyplot(fig)
 
 # Isi Tab 2
 with tab2:
