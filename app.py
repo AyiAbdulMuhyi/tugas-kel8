@@ -186,18 +186,34 @@ with tab3:
             st.write(f"**Rata-rata waktu dalam sistem (W)**: {result['W']:.2f} satuan waktu")
             st.write(f"**Rata-rata waktu dalam antrean (Wq)**: {result['Wq']:.2f} satuan waktu")
 with tab4:
-        st.header("📊 Prediksi Permintaan Es Krim Musiman (Regresi Linier)")
-        months = np.arange(1, 13)
-        demand = np.array([500, 520, 600, 800, 900, 1000, 950, 850, 700, 600, 550, 500])
-        coeffs = np.polyfit(months, demand, 1)
-        trend = np.poly1d(coeffs)
-        st.subheader("📌 Model Regresi Linier:")
-        st.latex(f"D(x) = {coeffs[0]:.2f}x + {coeffs[1]:.2f}")
-        fig4, ax4 = plt.subplots()
-        ax4.scatter(months, demand, label="Data Aktual")
-        ax4.plot(months, trend(months), color='red', label="Trend Regresi")
-        ax4.set_xlabel("Bulan")
-        ax4.set_ylabel("Permintaan")
-        ax4.set_title("Prediksi Permintaan Es Krim")
-        ax4.legend()
-        st.pyplot(fig4)
+    st.header("📊 Prediksi Permintaan Es Krim Musiman (Regresi Linier)")
+    st.markdown("Masukkan data permintaan es krim bulanan (misalnya: untuk Januari - Desember)")
+
+    input_text = st.text_area(
+        "Masukkan data permintaan (pisahkan dengan koma, contoh: 500,520,600,800,...):",
+        value="500,520,600,800,900,1000,950,850,700,600,550,500"
+    )
+
+    try:
+        demand = np.array([float(x.strip()) for x in input_text.split(",") if x.strip() != ""])
+        months = np.arange(1, len(demand)+1)
+
+        if len(demand) < 2:
+            st.warning("Masukkan minimal 2 data permintaan untuk membuat model regresi.")
+        else:
+            coeffs = np.polyfit(months, demand, 1)
+            trend = np.poly1d(coeffs)
+
+            st.subheader("📌 Model Regresi Linier:")
+            st.latex(f"D(x) = {coeffs[0]:.2f}x + {coeffs[1]:.2f}")
+
+            fig4, ax4 = plt.subplots()
+            ax4.scatter(months, demand, label="Data Permintaan Aktual")
+            ax4.plot(months, trend(months), color='red', label="Garis Tren Regresi")
+            ax4.set_xlabel("Bulan ke-")
+            ax4.set_ylabel("Permintaan")
+            ax4.set_title("Prediksi Permintaan Es Krim Berdasarkan Bulan")
+            ax4.legend()
+            st.pyplot(fig4)
+    except ValueError:
+        st.error("Input tidak valid. Pastikan hanya angka yang dipisahkan dengan koma.")
