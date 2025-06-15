@@ -201,19 +201,43 @@ with tab4:
         if len(demand) < 2:
             st.warning("Masukkan minimal 2 data permintaan untuk membuat model regresi.")
         else:
+            # Buat model regresi
             coeffs = np.polyfit(months, demand, 1)
             trend = np.poly1d(coeffs)
+            predicted = trend(months)
 
             st.subheader("📌 Model Regresi Linier:")
             st.latex(f"D(x) = {coeffs[0]:.2f}x + {coeffs[1]:.2f}")
 
+            # Tampilkan hasil per bulan
+            st.markdown("### 📄 Tabel Permintaan Aktual dan Prediksi")
+            hasil_tabel = {
+                "Bulan ke-": months,
+                "Permintaan Aktual": demand.astype(int),
+                "Prediksi Permintaan": predicted.round(2)
+            }
+            st.table(hasil_tabel)
+
+            # Prediksi untuk bulan ke-13 dan 14 (jika user masukkan <12 bulan, tetap lanjut)
+            next_months = np.array([len(demand)+1, len(demand)+2])
+            future_prediction = trend(next_months)
+
+            st.markdown("### 🔮 Prediksi Permintaan Bulan Berikutnya")
+            for i, val in zip(next_months, future_prediction):
+                st.write(f"Prediksi Bulan ke-{i}: **{val:.2f} unit**")
+
+            # Visualisasi
             fig4, ax4 = plt.subplots()
-            ax4.scatter(months, demand, label="Data Permintaan Aktual")
-            ax4.plot(months, trend(months), color='red', label="Garis Tren Regresi")
+            ax4.scatter(months, demand, label="Data Aktual", color="blue")
+            ax4.plot(months, predicted, color='red', label="Garis Regresi")
+
+            # Tambah titik prediksi ke depan
+            ax4.scatter(next_months, future_prediction, color="green", marker='x', label="Prediksi Mendatang")
             ax4.set_xlabel("Bulan ke-")
             ax4.set_ylabel("Permintaan")
-            ax4.set_title("Prediksi Permintaan Es Krim Berdasarkan Bulan")
+            ax4.set_title("Prediksi Permintaan Es Krim")
             ax4.legend()
             st.pyplot(fig4)
+
     except ValueError:
         st.error("Input tidak valid. Pastikan hanya angka yang dipisahkan dengan koma.")
