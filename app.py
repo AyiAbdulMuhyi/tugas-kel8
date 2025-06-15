@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 from pulp import LpMaximize, LpProblem, LpVariable, lpSum, LpStatus
 import matplotlib.pyplot as plt
+import math
 # Judul aplikasi
 st.set_page_config(page_title="Aplikasi Kelompok 8", layout="wide")
 st.title("📊 Aplikasi Streamlit Kelompok 8")
