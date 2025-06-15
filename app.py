@@ -1,4 +1,5 @@
 import streamlit as st
+import numpy as np
 from pulp import LpMaximize, LpProblem, LpVariable, lpSum, LpStatus
 import matplotlib.pyplot as plt
 import math
