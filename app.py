@@ -3,8 +3,8 @@ from pulp import LpMaximize, LpProblem, LpVariable, lpSum, LpStatus
 import matplotlib.pyplot as plt
 
 # Judul aplikasi
-st.set_page_config(page_title="Aplikasi Tiga Tab", layout="wide")
-st.title("📊 Aplikasi Streamlit dengan 3 Tab")
+st.set_page_config(page_title="Aplikasi Kelompok 6", layout="wide")
+st.title("📊 Aplikasi Kelompok 6")
 
 # Membuat 3 tab
 tab1, tab2, tab3 = st.tabs(["📁 Optimasi Produksi Pabrik Es Krim", "📈 Model Persediaan EOQ", "⚙️ Tab 3: Pengaturan"])
