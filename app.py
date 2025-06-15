@@ -8,7 +8,7 @@ st.set_page_config(page_title="Aplikasi Kelompok 6", layout="wide")
 st.title("📊 Aplikasi Streamlit Kelompok 6")
 
 # Membuat 3 tab
-tab1, tab2, tab3 = st.tabs(["📁 Optimasi Produksi Pabrik Es Krim", "📈 Tab 2: Analisis", "⚙️ Tab 3: Pengaturan"])
+tab1, tab2, tab3 = st.tabs(["📁 Model Program Linear", "📈 Tab 2: Model Persediaan EOQ", "⚙️ Tab 3: Model Antrian M/M/1"])
 
 # Isi Tab 1
 with tab1:
