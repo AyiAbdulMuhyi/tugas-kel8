@@ -3,6 +3,7 @@ import numpy as np
 from pulp import LpMaximize, LpProblem, LpVariable, lpSum, LpStatus
 import matplotlib.pyplot as plt
 import math
+from scipy.optimize import linprog
 
 # Judul aplikasi
 st.set_page_config(page_title="Aplikasi Kelompok 8", layout="wide")
