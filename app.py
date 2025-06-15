@@ -12,7 +12,7 @@ tab1, tab2, tab3 = st.tabs(["📁 Optimasi Produksi Pabrik Es Krim", "📈 Tab 2
 
 # Isi Tab 1
 with tab1:
-    st.title("🍦 Optimasi Produksi Pabrik Es Krim (Linear Programming)")
+    st.header("🍦 Optimasi Produksi Pabrik Es Krim (Linear Programming)")
 
     st.subheader("🧾 Input Data Produksi Es Krim")
 
