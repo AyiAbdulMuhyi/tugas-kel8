@@ -1,5 +1,5 @@
 import streamlit as st
-from pulp import LpMaximize, LpMinimize LpProblem, LpVariable, lpSum, LpStatus
+from pulp import LpMaximize, LpMinimize, LpProblem, LpVariable, lpSum, LpStatus
 import matplotlib.pyplot as plt
 
 # Judul aplikasi
