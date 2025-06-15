@@ -11,7 +11,6 @@ tab1, tab2, tab3, tab4 = st.tabs(["📁 Optimasi Produksi Pabrik Es Krim", "Tab 
 
 # Isi Tab 1
 with tab1:
-    st.set_page_config(page_title="Optimasi Produksi Es Krim", layout="centered")
     st.title("🍦 Optimasi Produksi Pabrik Es Krim (Linear Programming)")
 
     st.subheader("🧾 Input Data Produksi Es Krim")
