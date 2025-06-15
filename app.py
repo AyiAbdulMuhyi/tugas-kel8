@@ -8,7 +8,15 @@ st.set_page_config(page_title="Aplikasi Kelompok 6", layout="wide")
 st.title("📊 Aplikasi Streamlit Kelompok 6")
 
 # Membuat 3 tab
-tab1, tab2, tab3 = st.tabs(["📁 Model Program Linear", "📈 Tab 2: Model Persediaan EOQ", "⚙️ Tab 3: Model Antrian M/M/1"])
+tab1, tab2, tab3, tab4 = st.tabs(["📁 Model Program Linear", "📈 Tab 2: Model Persediaan EOQ", "⚙️ Tab 3: Model Antrian M/M/1", "🌨️ Tab 4: Model Lainnya"])
+
+with st.sidebar:
+    st.header("Aplikasi Kelompok 6")
+    st.write("""
+    1. tes
+    2. tess
+    3. baa
+    """)
 
 # Isi Tab 1
 with tab1:
@@ -166,4 +174,6 @@ with tab3:
             st.write(f"**Rata-rata jumlah pelanggan dalam antrean (Lq)**: {result['Lq']:.2f}")
             st.write(f"**Rata-rata waktu dalam sistem (W)**: {result['W']:.2f} satuan waktu")
             st.write(f"**Rata-rata waktu dalam antrean (Wq)**: {result['Wq']:.2f} satuan waktu")
-
+with tab4:
+    st.header("Tab 4: Model Lainnya")
+    st.tittle("Model Lain")
