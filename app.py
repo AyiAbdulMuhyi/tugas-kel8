@@ -7,7 +7,7 @@ st.set_page_config(page_title="Aplikasi Tiga Tab", layout="wide")
 st.title("📊 Aplikasi Streamlit dengan 3 Tab")
 
 # Membuat 3 tab
-tab1, tab2, tab3 = st.tabs(["📁 Tab 1: Data", "📈 Tab 2: Analisis", "⚙️ Tab 3: Pengaturan"])
+tab1, tab2, tab3 = st.tabs(["📁 Optimasi Produksi Pabrik Es Krim", "📈 Tab 2: Analisis", "⚙️ Tab 3: Pengaturan"])
 
 # Isi Tab 1
 with tab1:
