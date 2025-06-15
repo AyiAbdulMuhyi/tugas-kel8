@@ -7,11 +7,11 @@ st.set_page_config(page_title="Aplikasi Tiga Tab", layout="wide")
 st.title("📊 Aplikasi Streamlit dengan 3 Tab")
 
 # Membuat 3 tab
-tab1, tab2, tab3, tab4 = st.tabs(["📁 Optimasi Produksi Pabrik Es Krim", "Tab 2: LP Minimize", "📈 Tab 3: Analisis", "⚙️ Tab 4: Pengaturan"])
+tab1, tab2, tab3 = st.tabs(["📁 Optimasi Produksi Pabrik Es Krim", "Tab 2: LP Minimize", "📈 Tab 3: Analisis"])
 
 # Isi Tab 1
 with tab1:
-    st.title("🍦 Optimasi Produksi Pabrik Es Krim (Linear Programming)")
+    st.header("🍦 Optimasi Produksi Pabrik Es Krim (Linear Programming)")
 
     st.subheader("🧾 Input Data Produksi Es Krim")
 
@@ -90,67 +90,10 @@ with tab1:
             st.error("⚠️ Tidak ditemukan solusi optimal. Coba ubah parameter input.")
 # Isi Tab 2
 with tab2:
-    st.header("🧊 Optimasi Biaya Produksi Es Krim (Linear Programming - Minimasi)")
-    
-    # Input data
-    jenis_es_krim = ['Cokelat', 'Vanila', 'Stroberi']
-    
-    data = {}
-    for j in jenis_es_krim:
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            data[f"{j}_bahan"] = st.number_input(f"{j} - Bahan Baku (liter/unit)", min_value=0.0, value=3.0 if j=="Cokelat" else (2.0 if j=="Vanila" else 4.0))
-        with col2:
-            data[f"{j}_jam"] = st.number_input(f"{j} - Jam Kerja (jam/unit)", min_value=0.0, value=2.0 if j=="Cokelat" else (1.5 if j=="Vanila" else 2.5))
-        with col3:
-            data[f"{j}_biaya"] = st.number_input(f"{j} - Biaya Produksi (Rp/unit)", min_value=0.0, value=2000.0 if j=="Cokelat" else (1500.0 if j=="Vanila" else 1800.0))
-    
-    # Sumber daya tersedia
-    st.subheader("⚙️ Kapasitas Produksi")
-    max_bahan_baku = st.number_input("Total Bahan Baku Tersedia (liter)", min_value=1.0, value=100.0)
-    max_jam_kerja = st.number_input("Total Jam Kerja Tersedia (jam)", min_value=1.0, value=80.0)
-    
-    # Tombol jalankan
-    if st.button("🚀 Jalankan Optimasi"):
-    
-        # Buat model minimasi
-        model = LpProblem("Minimasi_Biaya_Produksi_Es_Krim", LpMinimize)
-    
-        # Variabel keputusan
-        variables = {j: LpVariable(f"{j}", lowBound=0, cat='Continuous') for j in jenis_es_krim}
-    
-        # Fungsi tujuan: minimasi total biaya
-        model += lpSum([data[f"{j}_biaya"] * variables[j] for j in jenis_es_krim]), "Total_Biaya"
-    
-        # Kendala bahan baku
-        model += lpSum([data[f"{j}_bahan"] * variables[j] for j in jenis_es_krim]) <= max_bahan_baku, "Kapasitas_Bahan_Baku"
-    
-        # Kendala jam kerja
-        model += lpSum([data[f"{j}_jam"] * variables[j] for j in jenis_es_krim]) <= max_jam_kerja, "Kapasitas_Jam_Kerja"
-    
-        # Jalankan solver
-        model.solve()
-    
-        st.subheader("📉 Hasil Optimasi Biaya Produksi:")
-    
-        if LpStatus[model.status] == 'Optimal':
-            total = 0
-            jumlah = []
-            for j in jenis_es_krim:
-                hasil = variables[j].varValue
-                jumlah.append(hasil)
-                st.write(f"Produksi Es Krim {j}: {hasil:.2f} unit")
-                total += hasil * data[f"{j}_biaya"]
-            st.success(f"💰 Total Biaya Produksi Minimum: Rp {total:,.0f}")
-    
-            # Visualisasi
-            fig, ax = plt.subplots()
-            ax.bar(jenis_es_krim, jumlah, color=['brown', 'beige', 'pink'])
-            ax.set_ylabel("Jumlah Produksi (unit)")
-            ax.set_title("📊 Visualisasi Produksi Biaya Minimum")
-            st.pyplot(fig)
-        else:
-            st.error(f"❌ Solusi tidak ditemukan. Status: {LpStatus[model.status]}")
+    st.header("Tab 3: Pengaturan")
+    st.write("Atur parameter atau preferensi di sini.")
+    name = st.text_input("Masukkan nama Anda:")
+    st.write(f"Nama yang dimasukkan: {name}")
 
 # Isi Tab 3
 with tab3:
