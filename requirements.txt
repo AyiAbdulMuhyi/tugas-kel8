@@ -1,5 +1,5 @@
 streamlit
 pulp
 pandas
-matplotlib
 math
+matplotlib.pyplot as plt
