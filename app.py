@@ -11,14 +11,16 @@ tab1, tab2, tab3 = st.tabs(["📁 Optimasi Produksi Pabrik Es Krim", "📈 Tab 2
 
 # Isi Tab 1
 with tab1:
+    st.set_page_config(page_title="Optimasi Produksi Es Krim", layout="centered")
     st.title("🍦 Optimasi Produksi Pabrik Es Krim (Linear Programming)")
     
     st.subheader("🧾 Input Data Produksi Es Krim")
     
-    # Input dinamis untuk 3 jenis es krim
+    # Jenis es krim
     jenis_es_krim = ['Cokelat', 'Vanila', 'Stroberi']
     data = {}
     
+    # Input kebutuhan bahan, jam kerja, keuntungan
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.markdown("**Jenis Es Krim**")
@@ -52,33 +54,46 @@ with tab1:
                 key=f"profit_{j}"
             )
     
-    # Input batasan total sumber daya
+    # Input batasan sumber daya
     st.subheader("⚙️ Batasan Sumber Daya")
     max_bahan_baku = st.number_input("Kapasitas Total Bahan Baku (liter)", min_value=1.0, value=100.0)
     max_jam_kerja = st.number_input("Kapasitas Total Jam Kerja (jam)", min_value=1.0, value=80.0)
     
+    # Opsi kontrol produksi
+    st.subheader("📋 Kontrol Jumlah Produksi")
+    samakan_jumlah = st.checkbox("Samakan jumlah produksi untuk semua jenis es krim")
+    
+    min_produksi = {}
+    if not samakan_jumlah:
+        st.markdown("Atur jumlah minimum produksi masing-masing jenis:")
+        col_min1, col_min2, col_min3 = st.columns(3)
+        min_produksi["Cokelat"] = col_min1.number_input("Min. Cokelat", min_value=0.0, value=1.0)
+        min_produksi["Vanila"] = col_min2.number_input("Min. Vanila", min_value=0.0, value=1.0)
+        min_produksi["Stroberi"] = col_min3.number_input("Min. Stroberi", min_value=0.0, value=1.0)
+    
     # Tombol eksekusi
     if st.button("🔍 Jalankan Optimasi"):
-        # Buat model LP
         model = LpProblem("Optimasi_Produksi_Es_Krim", LpMaximize)
     
         # Variabel keputusan
-        variables = {}
-        for j in jenis_es_krim:
-            variables[j] = LpVariable(j, lowBound=0, cat='Continuous')
+        variables = {j: LpVariable(j, lowBound=0, cat='Continuous') for j in jenis_es_krim}
     
-        # Fungsi Tujuan
+        # Fungsi tujuan
         model += lpSum([data[f"{j}_profit"] * variables[j] for j in jenis_es_krim]), "Total_Keuntungan"
     
-        # Kendala bahan baku
+        # Kendala sumber daya
         model += lpSum([data[f"{j}_bahan"] * variables[j] for j in jenis_es_krim]) <= max_bahan_baku, "Kapasitas_Bahan_Baku"
-    
-        # Kendala jam kerja
         model += lpSum([data[f"{j}_jam"] * variables[j] for j in jenis_es_krim]) <= max_jam_kerja, "Jam_Kerja"
     
-        # Tambahkan batas minimum 1 unit untuk setiap jenis
-        for j in jenis_es_krim:
-            model += variables[j] >= 1, f"Minimal_Produksi_{j}"
+        # Kendala tambahan
+        if samakan_jumlah:
+            # Semua sama
+            model += variables["Cokelat"] == variables["Vanila"], "Sama_Cokelat_Vanila"
+            model += variables["Vanila"] == variables["Stroberi"], "Sama_Vanila_Stroberi"
+        else:
+            # Minimum produksi masing-masing
+            for j in jenis_es_krim:
+                model += variables[j] >= min_produksi[j], f"Minimal_Produksi_{j}"
     
         # Jalankan solver
         model.solve()
@@ -102,7 +117,8 @@ with tab1:
             ax.set_title("📊 Visualisasi Hasil Produksi Optimal")
             st.pyplot(fig)
         else:
-            st.error(f"⚠️ Tidak ditemukan solusi optimal. Status: {LpStatus[model.status]}. Silakan ubah input.")
+            st.error(f"⚠️ Tidak ditemukan solusi optimal. Status: {LpStatus[model.status]}. Coba sesuaikan input.")
+
 
 
 # Isi Tab 2
