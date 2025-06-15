@@ -188,21 +188,20 @@ with tab3:
             st.write(f"**Rata-rata waktu dalam antrean (Wq)**: {result['Wq']:.2f} satuan waktu")
 with tab4:
         st.header("📊 Prediksi Permintaan Es Krim Musiman (Regresi Linier)")
-
-    months = np.arange(1, 13)
-    demand = np.array([500, 520, 600, 800, 900, 1000, 950, 850, 700, 600, 550, 500])
-
-    coeffs = np.polyfit(months, demand, 1)
-    trend = np.poly1d(coeffs)
-
-    st.subheader("📌 Model Regresi Linier:")
-    st.latex(f"D(x) = {coeffs[0]:.2f}x + {coeffs[1]:.2f}")
-
-    fig4, ax4 = plt.subplots()
-    ax4.scatter(months, demand, label="Data Aktual")
-    ax4.plot(months, trend(months), color='red', label="Trend Regresi")
-    ax4.set_xlabel("Bulan")
-    ax4.set_ylabel("Permintaan")
-    ax4.set_title("Prediksi Permintaan Es Krim")
-    ax4.legend()
-    st.pyplot(fig4)
+            months = np.arange(1, 13)
+            demand = np.array([500, 520, 600, 800, 900, 1000, 950, 850, 700, 600, 550, 500])
+        
+            coeffs = np.polyfit(months, demand, 1)
+            trend = np.poly1d(coeffs)
+        
+            st.subheader("📌 Model Regresi Linier:")
+            st.latex(f"D(x) = {coeffs[0]:.2f}x + {coeffs[1]:.2f}")
+        
+            fig4, ax4 = plt.subplots()
+            ax4.scatter(months, demand, label="Data Aktual")
+            ax4.plot(months, trend(months), color='red', label="Trend Regresi")
+            ax4.set_xlabel("Bulan")
+            ax4.set_ylabel("Permintaan")
+            ax4.set_title("Prediksi Permintaan Es Krim")
+            ax4.legend()
+            st.pyplot(fig4)
