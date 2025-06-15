@@ -7,10 +7,11 @@ st.set_page_config(page_title="Aplikasi Tiga Tab", layout="wide")
 st.title("📊 Aplikasi Streamlit dengan 3 Tab")
 
 # Membuat 3 tab
-tab1, tab2, tab3 = st.tabs(["📁 Optimasi Produksi Pabrik Es Krim", "📈 Tab 2: Analisis", "⚙️ Tab 3: Pengaturan"])
+tab1, tab2, tab3 = st.tabs(["📁 Optimasi Produksi Pabrik Es Krim", "📈 Model Persediaan EOQ", "⚙️ Tab 3: Pengaturan"])
 
 # Isi Tab 1
 with tab1:
+    st.set_page_config(page_title="Optimasi Produksi Es Krim", layout="centered")
     st.title("🍦 Optimasi Produksi Pabrik Es Krim (Linear Programming)")
 
     st.subheader("🧾 Input Data Produksi Es Krim")
@@ -92,9 +93,35 @@ with tab1:
 
 # Isi Tab 2
 with tab2:
-    st.header("Tab 2: Analisis")
-    st.write("Visualisasi atau hasil analisis ditampilkan di sini.")
-    st.line_chart({"data": [1, 5, 2, 6, 8]})
+    st.header("Model Persediaan EOQ - Pabrik Es Krim")
+    # Input dari user
+    D = st.number_input("Permintaan Tahunan (liter)", value=12000)
+    S = st.number_input("Biaya Pemesanan per Order (Rp)", value=200000)
+    H = st.number_input("Biaya Penyimpanan per Unit per Tahun (Rp)", value=500)
+
+    # Perhitungan EOQ
+    EOQ = math.sqrt((2 * D * S) / H)
+    st.subheader("Hasil Perhitungan:")
+    st.write(f"EOQ (Jumlah Optimal Pemesanan): {EOQ:.2f} liter")
+
+    # Biaya total
+    jumlah_pesan = D / EOQ
+    total_biaya = jumlah_pesan * S + (EOQ / 2) * H
+    st.write(f"Jumlah Pesanan per Tahun: {jumlah_pesan:.2f} kali")
+    st.write(f"Total Biaya Persediaan: Rp {total_biaya:,.0f}")
+
+    # Visualisasi
+    q_values = list(range(int(EOQ/2), int(EOQ*2)))
+    total_costs = [(D/q)*S + (q/2)*H for q in q_values]
+
+    fig, ax = plt.subplots()
+    ax.plot(q_values, total_costs, label='Total Biaya')
+    ax.axvline(x=EOQ, color='r', linestyle='--', label='EOQ')
+    ax.set_xlabel("Jumlah Pemesanan (Q)")
+    ax.set_ylabel("Total Biaya Persediaan (Rp)")
+    ax.set_title("Kurva Total Biaya vs Jumlah Pemesanan")
+    ax.legend()
+    st.pyplot(fig)
 
 # Isi Tab 3
 with tab3:
