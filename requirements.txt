@@ -2,4 +2,4 @@ streamlit
 pulp
 pandas
 math
-matplotlib.pyplot as plt
+matplotlib
