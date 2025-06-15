@@ -3,4 +3,3 @@ pulp
 pandas
 matplotlib
 numpy
-scipy.optimize
