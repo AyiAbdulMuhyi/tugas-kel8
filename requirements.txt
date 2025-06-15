@@ -1,3 +1,4 @@
 streamlit
-matplotlib.pyplot
 pulp
+pandas
+matplotlib
