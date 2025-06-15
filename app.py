@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import math
 
 # Judul aplikasi
-st.set_page_config(page_title="Aplikasi Tiga Tab", layout="wide")
-st.title("📊 Aplikasi Streamlit dengan 3 Tab")
+st.set_page_config(page_title="Aplikasi Kelompok 6", layout="wide")
+st.title("📊 Aplikasi Streamlit Kelompok 6")
 
 # Membuat 3 tab
 tab1, tab2, tab3 = st.tabs(["📁 Optimasi Produksi Pabrik Es Krim", "📈 Tab 2: Analisis", "⚙️ Tab 3: Pengaturan"])
@@ -125,7 +125,45 @@ with tab2:
 
 # Isi Tab 3
 with tab3:
-    st.header("Tab 3: Pengaturan")
-    st.write("Atur parameter atau preferensi di sini.")
-    name = st.text_input("Masukkan nama Anda:")
-    st.write(f"Nama yang dimasukkan: {name}")
+    st.header("Tab 3: Parkiran")
+    
+    def mm1_queue(lambda_rate, mu_rate):
+        if lambda_rate >= mu_rate:
+            return {
+                "error": "Sistem tidak stabil. Pastikan λ < μ"
+            }
+    
+        rho = lambda_rate / mu_rate
+        L = rho / (1 - rho)          # Rata-rata jumlah pelanggan di sistem
+        Lq = rho**2 / (1 - rho)      # Rata-rata jumlah pelanggan dalam antrean
+        W = 1 / (mu_rate - lambda_rate)  # Rata-rata waktu di sistem
+        Wq = rho / (mu_rate - lambda_rate)  # Rata-rata waktu dalam antrean
+    
+        return {
+            "rho": rho,
+            "L": L,
+            "Lq": Lq,
+            "W": W,
+            "Wq": Wq,
+        }
+    
+    # Judul aplikasi
+    st.title("Simulasi Model Antrian M/M/1")
+    
+    # Input dari user
+    lambda_rate = st.number_input("Masukkan laju kedatangan (λ):", min_value=0.01, step=0.1, format="%.2f")
+    mu_rate = st.number_input("Masukkan laju pelayanan (μ):", min_value=0.01, step=0.1, format="%.2f")
+    
+    if st.button("Hitung"):
+        result = mm1_queue(lambda_rate, mu_rate)
+        
+        if "error" in result:
+            st.error(result["error"])
+        else:
+            st.success("Hasil Perhitungan:")
+            st.write(f"**Utilisasi Sistem (ρ)**: {result['rho']:.2f}")
+            st.write(f"**Rata-rata jumlah pelanggan di sistem (L)**: {result['L']:.2f}")
+            st.write(f"**Rata-rata jumlah pelanggan dalam antrean (Lq)**: {result['Lq']:.2f}")
+            st.write(f"**Rata-rata waktu dalam sistem (W)**: {result['W']:.2f} satuan waktu")
+            st.write(f"**Rata-rata waktu dalam antrean (Wq)**: {result['Wq']:.2f} satuan waktu")
+
