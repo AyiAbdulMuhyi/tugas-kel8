@@ -1,5 +1,5 @@
 import streamlit as st
-from pulp import LpMaximize, LpMinimize, LpProblem, LpVariable, lpSum, LpStatus
+from pulp import LpMaximize, LpProblem, LpVariable, lpSum, LpStatus
 import matplotlib.pyplot as plt
 
 # Judul aplikasi
@@ -7,11 +7,12 @@ st.set_page_config(page_title="Aplikasi Tiga Tab", layout="wide")
 st.title("📊 Aplikasi Streamlit dengan 3 Tab")
 
 # Membuat 3 tab
-tab1, tab2, tab3 = st.tabs(["📁 Optimasi Produksi Pabrik Es Krim", "Tab 2: LP Minimize", "📈 Tab 3: Analisis"])
+tab1, tab2, tab3 = st.tabs(["📁 Optimasi Produksi Pabrik Es Krim", "📈 Tab 2: Analisis", "⚙️ Tab 3: Pengaturan"])
 
 # Isi Tab 1
 with tab1:
-    st.header("🍦 Optimasi Produksi Pabrik Es Krim (Linear Programming)")
+    st.set_page_config(page_title="Optimasi Produksi Es Krim", layout="centered")
+    st.title("🍦 Optimasi Produksi Pabrik Es Krim (Linear Programming)")
 
     st.subheader("🧾 Input Data Produksi Es Krim")
 
@@ -88,22 +89,17 @@ with tab1:
             st.pyplot(fig)
         else:
             st.error("⚠️ Tidak ditemukan solusi optimal. Coba ubah parameter input.")
+
+
 # Isi Tab 2
 with tab2:
-    st.header("Tab 3: Pengaturan")
-    st.write("Atur parameter atau preferensi di sini.")
-    name = st.text_input("Masukkan nama Anda:")
-    st.write(f"Nama yang dimasukkan: {name}")
+    st.header("Tab 2: Analisis")
+    st.write("Visualisasi atau hasil analisis ditampilkan di sini.")
+    st.line_chart({"data": [1, 5, 2, 6, 8]})
 
 # Isi Tab 3
 with tab3:
     st.header("Tab 3: Pengaturan")
-    st.write("Atur parameter atau preferensi di sini.")
-    name = st.text_input("Masukkan nama Anda:")
-    st.write(f"Nama yang dimasukkan: {name}")
-
-with tab4:
-    st.header("Tab 4: Pengaturan")
     st.write("Atur parameter atau preferensi di sini.")
     name = st.text_input("Masukkan nama Anda:")
     st.write(f"Nama yang dimasukkan: {name}")
