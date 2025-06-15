@@ -186,3 +186,4 @@ with tab3:
             st.write(f"**Rata-rata waktu dalam sistem (W)**: {result['W']:.2f} satuan waktu")
             st.write(f"**Rata-rata waktu dalam antrean (Wq)**: {result['Wq']:.2f} satuan waktu")
 with tab4:
+        st.header("bilek")
