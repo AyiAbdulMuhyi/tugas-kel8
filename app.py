@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import math
 
 # Judul aplikasi
-st.set_page_config(page_title="Aplikasi Kelompok 6", layout="wide")
-st.title("📊 Aplikasi Streamlit Kelompok 6")
+st.set_page_config(page_title="Aplikasi Kelompok 8", layout="wide")
+st.title("📊 Aplikasi Streamlit Kelompok 8")
 
 # Membuat 3 tab
 tab1, tab2, tab3, tab4 = st.tabs(["📁 Model Program Linear", "📈 Tab 2: Model Persediaan EOQ", "⚙️ Tab 3: Model Antrian M/M/1", "🌨️ Tab 4: Model Lainnya"])
@@ -18,10 +18,10 @@ with st.sidebar:
         Aplikasi ini menyediakan berbagai model matematika yang berguna untuk pengambilan keputusan di pabrik es krim.
         
         *Tab-tab yang tersedia:*
-        1. *Optimasi Produksi* - Menghitung kombinasi produksi optimal
-        2. *Peramalan Permintaan* - Memprediksi permintaan es krim
-        3. *Manajemen Inventori* - Menghitung EOQ untuk bahan baku
-        4. *Analisis Break Even* - Menghitung titik impas produksi
+        1. *Program Linear* - Menghitung kombinasi produksi optimal
+        2. *Persediaan EOQ* - Memprediksi permintaan es krim
+        3. *Model Antrian M/M/1* - Menghitung EOQ untuk bahan baku
+        4. *Model Lainnya* - Menghitung titik impas produksi
         
         *Cara menggunakan:*
         - Pilih tab yang diinginkan
