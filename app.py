@@ -72,52 +72,39 @@ with tab1:
         min_produksi["Stroberi"] = col_min3.number_input("Min. Stroberi", min_value=0.0, value=1.0)
     
     # Tombol eksekusi
-    if st.button("🔍 Jalankan Optimasi"):
-        model = LpProblem("Optimasi_Produksi_Es_Krim", LpMaximize)
-    
-        # Variabel keputusan
-        variables = {j: LpVariable(j, lowBound=0, cat='Continuous') for j in jenis_es_krim}
-    
-        # Fungsi tujuan
-        model += lpSum([data[f"{j}_profit"] * variables[j] for j in jenis_es_krim]), "Total_Keuntungan"
-    
-        # Kendala sumber daya
-        model += lpSum([data[f"{j}_bahan"] * variables[j] for j in jenis_es_krim]) <= max_bahan_baku, "Kapasitas_Bahan_Baku"
-        model += lpSum([data[f"{j}_jam"] * variables[j] for j in jenis_es_krim]) <= max_jam_kerja, "Jam_Kerja"
-    
-        # Kendala tambahan
-        if samakan_jumlah:
-            # Semua sama
-            model += variables["Cokelat"] == variables["Vanila"], "Sama_Cokelat_Vanila"
-            model += variables["Vanila"] == variables["Stroberi"], "Sama_Vanila_Stroberi"
-        else:
-            # Minimum produksi masing-masing
-            for j in jenis_es_krim:
-                model += variables[j] >= min_produksi[j], f"Minimal_Produksi_{j}"
-    
         # Jalankan solver
-        model.solve()
-    
-        st.subheader("📈 Hasil Optimasi Produksi:")
-    
-        if LpStatus[model.status] == 'Optimal':
-            total = 0
-            jumlah = []
-            for j in jenis_es_krim:
-                hasil = variables[j].varValue
-                jumlah.append(hasil)
-                st.write(f"Produksi Es Krim {j}: {hasil:.2f} unit")
-                total += hasil * data[f"{j}_profit"]
-            st.success(f"💰 Total Keuntungan: Rp {total:,.0f}")
-    
-            # Visualisasi
-            fig, ax = plt.subplots()
-            ax.bar(jenis_es_krim, jumlah, color=['brown', 'beige', 'pink'])
-            ax.set_ylabel("Jumlah Produksi (unit)")
-            ax.set_title("📊 Visualisasi Hasil Produksi Optimal")
-            st.pyplot(fig)
-        else:
-            st.error(f"⚠️ Tidak ditemukan solusi optimal. Status: {LpStatus[model.status]}. Coba sesuaikan input.")
+    model.solve()
+
+    st.subheader("📈 Hasil Optimasi Produksi:")
+
+    if LpStatus[model.status] == 'Optimal':
+        total = 0
+        jumlah = []
+        for j in jenis_es_krim:
+            hasil = variables[j].varValue
+            jumlah.append(hasil)
+            st.write(f"Produksi Es Krim {j}: {hasil:.2f} unit")
+            total += hasil * data[f"{j}_profit"]
+        st.success(f"💰 Total Keuntungan: Rp {total:,.0f}")
+
+        # Tampilkan batas maksimum produksi sama (jika user memilih "samakan")
+        if samakan_jumlah:
+            total_bahan = sum([data[f"{j}_bahan"] for j in jenis_es_krim])
+            total_jam = sum([data[f"{j}_jam"] for j in jenis_es_krim])
+            max_x_bahan = max_bahan_baku / total_bahan
+            max_x_jam = max_jam_kerja / total_jam
+            max_x = min(max_x_bahan, max_x_jam)
+            st.info(f"🔎 Jumlah produksi maksimal (jika semua sama): {max_x:.2f} unit per jenis")
+
+        # Visualisasi
+        fig, ax = plt.subplots()
+        ax.bar(jenis_es_krim, jumlah, color=['brown', 'beige', 'pink'])
+        ax.set_ylabel("Jumlah Produksi (unit)")
+        ax.set_title("📊 Visualisasi Hasil Produksi Optimal")
+        st.pyplot(fig)
+    else:
+        st.error(f"⚠️ Tidak ditemukan solusi optimal. Status: {LpStatus[model.status]}. Coba sesuaikan input.")
+
 
 
 
